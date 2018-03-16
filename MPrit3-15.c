@@ -20,7 +20,7 @@ for(;i<300;i++) printf("%d ",i);
 #endif
 #ifdef Q4b
 int i=0;
-for(;i<300;i++) printf("%d ",i);
+for(;i<30000;i++) printf("%d ",i);
 #endif
 }
 
@@ -31,7 +31,7 @@ void ex(int s)
 
 #ifdef Q4b
 void sig2(int s){
-printf("\n\nI am in SUGUSR2\n\n");
+printf("\n\n\n\n\n\nI am in SUGUSR2\n\n\n\n\n");
 }
 #endif
 
