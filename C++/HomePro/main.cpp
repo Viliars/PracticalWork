@@ -6,13 +6,14 @@ using namespace std;
 
 class nix
 {
+protected:
 int len_name;
 public:
     int year;
     char* name;
     virtual void info()=0;
     nix(const char* name,int year ){ this->len_name=strlen(name); this->name=new char[len_name]; strcpy(this->name,name); this->year=year; cout<<"Kernel created"<<endl; }
-    //nix(const nix& another) {  if(another.len_name!=this->len_name) {  delete[] this->name; this->name=new char[another.len_name]; } strcpy(this->name,another.name);  }
+    nix(const nix& another) {  if(another.len_name!=this->len_name) {  delete[] this->name; this->name=new char[another.len_name]; } strcpy(this->name,another.name);  }
     virtual ~nix() { delete[] name;
     cout<<"DELETE KERNEL"<<endl; }
 };
@@ -26,13 +27,13 @@ public:
     {
         len_version=strlen(version); this->version=new char[len_version]; strcpy(this->version,version); cout<<"Unix created"<<endl;
     }
-    Unix(const nix& another)
+    Unix& operator=(const Unix& another)
     {
-        if(another.len_name!=this->len_name) {  delete[] this->name; this->name=new char[another.len_name]; } strcpy(this->name,another.name);
-        if(another.len_version!=this->len_version) {  delete[] this->version; this->version=new char[another.len_version]; } strcpy(this->version,another.version);
+        if(another.len_name!=this->len_name) {  this->len_name=another.len_name; delete[] this->name; this->name=new char[len_name]; } strcpy(this->name,another.name);
+        if(another.len_version!=this->len_version) {  this->len_version=another.len_version; delete[] this->version; this->version=new char[len_version]; } strcpy(this->version,another.version);
+        return *this;
     }
-    ~Unix() { delete[] version;
-    cout<<"DELETE_UNIX "<<name<<" "; }
+    ~Unix() { delete[] version; cout<<"DELETE_UNIX "<<name<<" "; }
 };
 
 class BSD:public virtual nix
