@@ -2,7 +2,8 @@
 #include<string>
 #include<cstdlib>
 #include<cstring>
-using namespace std;
+#include <ctime>
+namespace unix{
 
 class nix
 {
@@ -12,19 +13,21 @@ public:
     int year;
     char* name;
     virtual void info()=0;
-    nix(const char* name,int year ){ this->len_name=strlen(name); this->name=new char[this->len_name]; strcpy(this->name,name); this->year=year; cout<<"Kernel created"<<endl; }
-    virtual ~nix() { delete[] name; cout<<"DELETE KERNEL"<<endl; }
+    nix(const char* name,int year ){ this->len_name=strlen(name); this->name=new char[this->len_name]; strcpy(this->name,name); this->year=year; std::cout<<"Kernel created"<<std::endl; }
+    virtual ~nix() { delete[] name; std::cout<<"DELETE KERNEL"<<std::endl; }
 };
+
+
 class Unix:public virtual nix
 {
 protected:
     int len_version;
 public:
     char* version;
-    void info() { cout<<"I am "<<name<<" "<<version<<endl; }
+    void info() { std::cout<<"I am "<<name<<" "<<version<<std::endl; }
     Unix(const char* version,int year,const char* name="Unix"): nix(name,year)
     {
-        len_version=strlen(version); this->version=new char[len_version]; strcpy(this->version,version); cout<<"Unix created"<<endl;
+        len_version=strlen(version); this->version=new char[len_version]; strcpy(this->version,version); std::cout<<"Unix created"<<std::endl;
     }
     Unix& operator=(const Unix& another)
     {
@@ -32,18 +35,20 @@ public:
         if(another.len_version!=this->len_version) {  this->len_version=another.len_version; delete[] this->version; this->version=new char[this->len_version]; } strcpy(this->version,another.version);
         return *this;
     }
-    virtual ~Unix() { delete[] version; cout<<"DELETE_UNIX "<<name<<" "; }
+    virtual ~Unix() { delete[] version; std::cout<<"DELETE_UNIX "<<name<<" "; }
 };
+
 
 class BSD:public virtual nix
 {
 public:
     int version;
     int year;
-    void info() { cout<<"I am "<<version<<name<<endl; }
-    BSD(int version,int year,const char* name="BSD"): nix(name,year) { this->version=version; cout<<"BSD created"<<endl; }
-    virtual ~BSD() { cout<<"DELETE_BSD "<<name<<" ";  }
+    void info() { std::cout<<"I am "<<version<<name<<std::endl; }
+    BSD(int version,int year,const char* name="BSD"): nix(name,year) { this->version=version; std::cout<<"BSD created"<<std::endl; }
+    virtual ~BSD() { std::cout<<"DELETE_BSD "<<name<<" ";  }
 };
+
 
 class NewBSD:public BSD
 {
@@ -51,29 +56,78 @@ protected:
     int len_ver;
 public:
     char* ver;
-    void info() { cout<<"I am "<<ver<<name<<" "<<version<<endl;  }
+    void info() { std::cout<<"I am "<<ver<<name<<" "<<version<<std::endl;  }
     NewBSD(const char* ver,int version,int year,const char* name="BSD"): nix(name,year),BSD(version,year,name)
     {
        this->len_ver=strlen(ver); this->ver=new char[this->len_ver]; strcpy(this->ver,ver);
     }
     ~NewBSD() { delete[] ver;
-    cout<<"DELETE_NEW ";}
+    std::cout<<"DELETE_NEW ";}
 };
+
 
 class NewUnix:public Unix,public BSD
 {
 public:
-    void info() { cout<<"I am "<<BSD::version<<name<<" "<<Unix::version<<endl; }
+    void info() { std::cout<<"I am "<<BSD::version<<name<<" "<<Unix::version<<std::endl; }
     static int count;
-    NewUnix(const char* version,int year,const char* name="Unix",int ver=1): nix(name,year),Unix(version,year,name), BSD(ver,year,name) {
+    NewUnix(const char* version,int year,const char* name="Unix",int ver=1): nix(name,year), Unix(version,year,name), BSD(ver,year,name) {
         count++;
     }
-    ~NewUnix() {   cout<<"DELETE_NEW2 "; }
+    ~NewUnix() {   std::cout<<"DELETE_NEW2 "; }
 };
 
+
 int NewUnix::count=0;
+}
+namespace win{
+namespace mac{
+
+
+
+}
+
+using namespace mac;
+class Win{
+protected:
+    int len_name;
+public:
+    char* name;
+    int bit;
+    Win(const char* name,int bit=64)
+    {
+        this->len_name=strlen(name); this->name=new char[this->len_name]; strcpy(this->name,name);
+        if(bit==64||bit==32) this->bit=bit;
+        else throw 2;
+        std::cout<<"Win created"<<std::endl;
+    }
+    virtual ~Win() { delete[] name; std::cout<<"DELETE WIN"<<std::endl; }
+    // methods
+    void run(int how)
+    {
+        try
+        {
+            for(int i=0;i<how;i++)
+            {
+                std::srand(unsigned(std::time(0)));
+                int random_variable = std::rand();
+                random_variable%=3;
+                if(!random_variable) throw 3;
+            }
+        }
+        catch(...)
+        {
+            std::cout<<"WINDOWS FELL BLUE SCREEN ERROR"<<std::endl;
+        }
+    }
+};
+}
+using namespace std;
+using namespace unix;
+using namespace win;
 int main()
 {
+    setlocale(LC_ALL, "rus");
     Unix V0("PDP7",1969,"Unics");
     Unix V1("Version 1",1971,"Unix");
     Unix V2("Version 2",1972);
@@ -95,5 +149,11 @@ int main()
     Unix L0("0.0.1",1991,"Linux");
     Unix L1("GNU",1983,"Linux");
     NewUnix NU0("Version 8",1985,"Unix",8);
+try
+{
+    Win W0("Windows 10",32);
+    W0.run(200);
+}
+catch(...) {  cout<<"!!! ERROR !!!"<<endl; }
     return 0;
 }
