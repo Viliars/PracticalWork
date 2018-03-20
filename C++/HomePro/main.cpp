@@ -81,13 +81,8 @@ public:
 int NewUnix::count=0;
 }
 namespace win{
-namespace mac{
 
 
-
-}
-
-using namespace mac;
 class Win{
 protected:
     int len_name;
@@ -122,9 +117,30 @@ public:
     }
 };
 }
+namespace mac{
+class Mac{
+protected:
+    int len_name;
+    char* name;
+    public:
+    Mac(const char* name="MacOS")
+    {
+        this->len_name=strlen(name); this->name=new char[this->len_name]; strcpy(this->name,name);
+        std::cout<<"MacOS created"<<std::endl;
+    }
+    virtual ~Mac()
+    {
+        delete[] name;
+        std::cout<<"DELETE MAC"<<std::endl;
+    }
+};
+}
+
+
 using namespace std;
 using namespace unix;
 using namespace win;
+using namespace mac;
 int main()
 {
     setlocale(LC_ALL, "rus");
@@ -149,6 +165,7 @@ int main()
     Unix L0("0.0.1",1991,"Linux");
     Unix L1("GNU",1983,"Linux");
     NewUnix NU0("Version 8",1985,"Unix",8);
+    Mac M0("MacOS");
 try
 {
     Win W0("Windows 10",32);
