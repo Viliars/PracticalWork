@@ -3,3 +3,4 @@ C++/HomePro/HomePro.cbp
 *.exe
 *.depend
 *.o
+*.layout
