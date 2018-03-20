@@ -7,18 +7,17 @@ using namespace std;
 class nix
 {
 protected:
-int len_name;
+    int len_name;
 public:
     int year;
     char* name;
     virtual void info()=0;
-    nix(const char* name,int year ){ this->len_name=strlen(name); this->name=new char[len_name]; strcpy(this->name,name); this->year=year; cout<<"Kernel created"<<endl; }
-    nix(const nix& another) {  if(another.len_name!=this->len_name) {  delete[] this->name; this->name=new char[another.len_name]; } strcpy(this->name,another.name);  }
-    virtual ~nix() { delete[] name;
-    cout<<"DELETE KERNEL"<<endl; }
+    nix(const char* name,int year ){ this->len_name=strlen(name); this->name=new char[this->len_name]; strcpy(this->name,name); this->year=year; cout<<"Kernel created"<<endl; }
+    virtual ~nix() { delete[] name; cout<<"DELETE KERNEL"<<endl; }
 };
 class Unix:public virtual nix
 {
+protected:
     int len_version;
 public:
     char* version;
@@ -29,11 +28,11 @@ public:
     }
     Unix& operator=(const Unix& another)
     {
-        if(another.len_name!=this->len_name) {  this->len_name=another.len_name; delete[] this->name; this->name=new char[len_name]; } strcpy(this->name,another.name);
-        if(another.len_version!=this->len_version) {  this->len_version=another.len_version; delete[] this->version; this->version=new char[len_version]; } strcpy(this->version,another.version);
+        if(another.len_name!=this->len_name) {  this->len_name=another.len_name; delete[] this->name; this->name=new char[this->len_name]; } strcpy(this->name,another.name);
+        if(another.len_version!=this->len_version) {  this->len_version=another.len_version; delete[] this->version; this->version=new char[this->len_version]; } strcpy(this->version,another.version);
         return *this;
     }
-    ~Unix() { delete[] version; cout<<"DELETE_UNIX "<<name<<" "; }
+    virtual ~Unix() { delete[] version; cout<<"DELETE_UNIX "<<name<<" "; }
 };
 
 class BSD:public virtual nix
@@ -43,17 +42,19 @@ public:
     int year;
     void info() { cout<<"I am "<<version<<name<<endl; }
     BSD(int version,int year,const char* name="BSD"): nix(name,year) { this->version=version; cout<<"BSD created"<<endl; }
-    ~BSD() { cout<<"DELETE_BSD "<<name<<" ";  }
+    virtual ~BSD() { cout<<"DELETE_BSD "<<name<<" ";  }
 };
 
 class NewBSD:public BSD
 {
+protected:
+    int len_ver;
 public:
     char* ver;
     void info() { cout<<"I am "<<ver<<name<<" "<<version<<endl;  }
     NewBSD(const char* ver,int version,int year,const char* name="BSD"): nix(name,year),BSD(version,year,name)
     {
-        this->ver=new char[strlen(ver)]; strcpy(this->ver,ver);
+       this->len_ver=strlen(ver); this->ver=new char[this->len_ver]; strcpy(this->ver,ver);
     }
     ~NewBSD() { delete[] ver;
     cout<<"DELETE_NEW ";}
