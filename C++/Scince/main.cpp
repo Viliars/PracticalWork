@@ -133,7 +133,7 @@ void convex_hull_2 (std::vector<Point> & a) {
 using namespace hull;
 int main()
 {
-    int n=55000000;
+    int n=2000;
     vector<Point> a,b;
     Point c;
     int c1,c2;
