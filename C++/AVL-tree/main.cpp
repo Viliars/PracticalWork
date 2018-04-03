@@ -9,6 +9,7 @@ int main() {
     t.insert("bar");
     t.print();
     t.remove("cadabra");
+    cout<<"-----------------------------------------------------"<<endl;
     t.print();
     return 0;
 }

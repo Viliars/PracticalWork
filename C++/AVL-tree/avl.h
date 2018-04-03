@@ -3,8 +3,6 @@
 #include <string>
 #include <stdio.h>
 #include <cstdlib>
-#include <time.h>
-#include <set>
 using namespace std;
 
 struct AVLNode {
@@ -41,6 +39,57 @@ struct AVLNode {
         if (left == NULL) return right;
         left = left->removeMinimum();
         return balance();
+     }
+
+     AVLNode* balance()
+     {
+         fix();
+         switch(getBalanceFactor())
+         {
+             case -2: if(left->getBalanceFactor()>0)
+             {
+                 left=left->rotateLeft();
+             }
+             return rotateRight();
+             case 2: if(right->getBalanceFactor()<0)
+             {
+                 right=right->rotateRight();
+             }
+             return rotateLeft();
+             default:
+                return this;
+         }
+     }
+
+     AVLNode* rotateLeft()
+     {
+        AVLNode* t=right;
+        right=t->left;
+        t->left=this;
+        fix();
+        t->fix();
+        return t;
+     }
+
+     AVLNode* rotateRight()
+     {
+        AVLNode* t=left;
+        left=t->right;
+        t->right=this;
+        fix();
+        t->fix();
+        return t;
+     }
+
+     void print()
+     {
+         if(right!=NULL) right->print();
+         for(int i=6;i>=height;--i)
+         {
+             printf("   ");
+         }
+         printf("%s\n",key.c_str());
+         if(left!=NULL) left->print();
      }
 
      static AVLNode *remove(AVLNode *p, string const &_key) {
